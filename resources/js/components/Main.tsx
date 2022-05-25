@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import withRequestService from "./hoc/with-request-service";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import SignIn from "./pages/auth/signin";
 import SignUp from "./pages/auth/signup";
+import Header from "./Header";
 
 interface Props {
     auth: boolean;
@@ -19,8 +20,10 @@ type RouteProps = {
     path: string;
 };
 
-const Main: React.FC<Props> = (props) => {
+const Main = (props: Props) => {
     const { auth, setAuth } = props;
+    const [lang, setLeng] = useState("rus");
+
     function AuthorizedRoute(props: RouteProps) {
         const { children, exact, path } = props;
         return (
@@ -64,10 +67,11 @@ const Main: React.FC<Props> = (props) => {
             />
         );
     }
-   
+
     return (
         <>
             <CssBaseline />
+            <Header lang={lang} setLeng={setLeng} />
             <Switch>
                 <AuthorizedRoute exact path="/">
                     <Home setAuth={setAuth} />
