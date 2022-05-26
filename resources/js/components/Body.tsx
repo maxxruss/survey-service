@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
 import withRequestService from "./hoc/with-request-service";
 import * as actions from "../redux/actions";
 import { connect } from "react-redux";
@@ -6,6 +7,10 @@ import { bindActionCreators } from "redux";
 import compose from "../utils/compose";
 import Spinner from "./spinner";
 import Main from "./Main";
+import SignIn from "./pages/auth/signin";
+import SignUp from "./pages/auth/signup";
+import CssBaseline from "@mui/material/CssBaseline";
+import Page404 from "./pages/404";
 
 interface Props {
     requestService: {
@@ -20,9 +25,59 @@ type StateProps = {
     email: string;
 };
 
+type RouteProps = {
+    children: any;
+    exact: boolean;
+    path: string;
+};
+
 const Body: React.FC<Props> = (props) => {
     const [loading, setLoading] = useState(false);
     const [auth, setAuth] = useState(true);
+
+    function AuthorizedRoute(props: RouteProps): JSX.Element {
+        const { children, exact, path } = props;
+        return (
+            <Route
+                exact={exact}
+                path={path}
+                render={({ location }) =>
+                    auth ? (
+                        children
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/signin",
+                                state: { from: location },
+                            }}
+                        />
+                    )
+                }
+            />
+        );
+    }
+
+    function UnAuthorizedRoute(props: RouteProps): JSX.Element {
+        const { children, exact, path } = props;
+        return (
+            <Route
+                exact={exact}
+                path={path}
+                render={({ location }) =>
+                    !auth ? (
+                        children
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/",
+                                state: { from: location },
+                            }}
+                        />
+                    )
+                }
+            />
+        );
+    }
 
     async function authCheck() {
         setLoading(true);
@@ -49,7 +104,19 @@ const Body: React.FC<Props> = (props) => {
     if (loading) return <Spinner />;
     return (
         <>
-            <Main auth={auth} setAuth={setAuth} />
+            <CssBaseline />
+            <Switch>
+                <AuthorizedRoute exact path="/">
+                    <Main setAuth={setAuth} />
+                </AuthorizedRoute>
+                <UnAuthorizedRoute exact path="/signin">
+                    <SignIn setAuth={setAuth} />
+                </UnAuthorizedRoute>
+                <UnAuthorizedRoute exact path="/signup">
+                    <SignUp setAuth={setAuth} />
+                </UnAuthorizedRoute>
+                <Route path="*" component={Page404} />
+            </Switch>
         </>
     );
 };

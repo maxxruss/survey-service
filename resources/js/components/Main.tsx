@@ -1,94 +1,33 @@
 import React, { useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import withRequestService from "./hoc/with-request-service";
-import CssBaseline from "@mui/material/CssBaseline";
-import Page404 from "./pages/404";
+import { Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import SignIn from "./pages/auth/signin";
-import SignUp from "./pages/auth/signup";
 import Header from "./Header";
+import Menu from "./ui/Menu";
 
-interface Props {
-    auth: boolean;
-    setAuth: () => {};
-}
 
-type RouteProps = {
-    children: any;
-    exact: boolean;
-    path: string;
+type Props = {
+    setAuth: (v: boolean) => void;
 };
 
 const Main = (props: Props) => {
-    const { auth, setAuth } = props;
+    const { setAuth } = props;
     const [lang, setLeng] = useState("rus");
-
-    function AuthorizedRoute(props: RouteProps) {
-        const { children, exact, path } = props;
-        return (
-            <Route
-                exact={exact}
-                path={path}
-                render={({ location }) =>
-                    auth ? (
-                        children
-                    ) : (
-                        <Redirect
-                            to={{
-                                pathname: "/signin",
-                                state: { from: location },
-                            }}
-                        />
-                    )
-                }
-            />
-        );
-    }
-
-    function UnAuthorizedRoute(props: RouteProps) {
-        const { children, exact, path } = props;
-        return (
-            <Route
-                exact={exact}
-                path={path}
-                render={({ location }) =>
-                    !auth ? (
-                        children
-                    ) : (
-                        <Redirect
-                            to={{
-                                pathname: "/",
-                                state: { from: location },
-                            }}
-                        />
-                    )
-                }
-            />
-        );
-    }
 
     return (
         <>
-            <CssBaseline />
             <Header lang={lang} setLeng={setLeng} />
+            <Menu />
             <Switch>
-                <AuthorizedRoute exact path="/">
+                <Route exact path="/">
                     <Home setAuth={setAuth} />
-                </AuthorizedRoute>
-                <AuthorizedRoute exact path="/about">
-                    <About />
-                </AuthorizedRoute>
-                <UnAuthorizedRoute exact path="/signin">
-                    <SignIn setAuth={setAuth} />
-                </UnAuthorizedRoute>
-                <UnAuthorizedRoute exact path="/signup">
-                    <SignUp setAuth={setAuth} />
-                </UnAuthorizedRoute>
-                <Route path="*" component={Page404} />
+                </Route>
+                <Route component={About} exact path="/about">
+                    <About/>
+                </Route>
             </Switch>
         </>
     );
 };
 
-export default withRequestService()(Main);
+export default Main;

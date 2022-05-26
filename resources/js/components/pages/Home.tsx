@@ -9,15 +9,16 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Interviewer from "./interviewer";
 
-interface Props {
+type Props = {
     authLogOut: () => {};
     setAuth: (v: boolean) => {};
     requestService: {
         auth: (method: object) => { result: string };
     };
-}
+};
 
-const Home: React.FC<Props> = (props) => {
+const Home = (props: Props) => {
+    const { authLogOut, setAuth } = props;
     // console.log("props: ", props);
     const history = useHistory();
 
@@ -27,8 +28,8 @@ const Home: React.FC<Props> = (props) => {
         });
 
         if (response.result == "success") {
-            props.authLogOut();
-            props.setAuth(false);
+            authLogOut();
+            setAuth(false);
             history.push("/signin");
         }
     };
