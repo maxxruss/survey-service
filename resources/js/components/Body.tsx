@@ -106,15 +106,15 @@ const Body: React.FC<Props> = (props) => {
         <>
             <CssBaseline />
             <Switch>
-                <AuthorizedRoute exact path="/">
-                    <Main setAuth={setAuth} />
-                </AuthorizedRoute>
                 <UnAuthorizedRoute exact path="/signin">
                     <SignIn setAuth={setAuth} />
                 </UnAuthorizedRoute>
                 <UnAuthorizedRoute exact path="/signup">
                     <SignUp setAuth={setAuth} />
                 </UnAuthorizedRoute>
+                <AuthorizedRoute exact={false} path="/">
+                    <Main setAuth={setAuth} />
+                </AuthorizedRoute>
                 <Route path="*" component={Page404} />
             </Switch>
         </>

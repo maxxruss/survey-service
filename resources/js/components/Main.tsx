@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import Contacts from "./pages/Contacts";
 import Header from "./Header";
 import Menu from "./ui/Menu";
-
 
 type Props = {
     setAuth: (v: boolean) => void;
@@ -17,13 +17,16 @@ const Main = (props: Props) => {
     return (
         <>
             <Header lang={lang} setLeng={setLeng} />
-            <Menu />
+            <Menu setAuth={setAuth} />
             <Switch>
                 <Route exact path="/">
-                    <Home setAuth={setAuth} />
+                    <Home />
                 </Route>
-                <Route component={About} exact path="/about">
-                    <About/>
+                <Route exact path="/about">
+                    <About />
+                </Route>
+                <Route exact path="/contacts">
+                    <Contacts />
                 </Route>
             </Switch>
         </>

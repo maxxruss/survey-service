@@ -1,55 +1,19 @@
 import React from "react";
-import Button from "@mui/material/Button";
 // import withRouter from "../hoc/with-router";
-import withRequestService from "../hoc/with-request-service";
-import compose from "../../utils/compose";
-import * as actions from "../../redux/actions/index";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+
 import Interviewer from "./interviewer";
 
-type Props = {
-    authLogOut: () => {};
-    setAuth: (v: boolean) => {};
-    requestService: {
-        auth: (method: object) => { result: string };
-    };
-};
 
-const Home = (props: Props) => {
-    const { authLogOut, setAuth } = props;
-    // console.log("props: ", props);
-    const history = useHistory();
 
-    const logout = async () => {
-        var response = await props.requestService.auth({
-            method: "logout",
-        });
-
-        if (response.result == "success") {
-            authLogOut();
-            setAuth(false);
-            history.push("/signin");
-        }
-    };
-
-    const about = async () => {
-        history.push("/about");
-    };
+const Home = () => {
+    // console.log("props: ", props);    
 
     return (
         <div className="tender_test">
-            <h1>Home</h1>
-            <Button onClick={() => logout()}>Выйти</Button>
-            <Button onClick={() => about()}>about</Button>
+            <h1>Home</h1>            
             <Interviewer />
         </div>
     );
 };
 
-export default compose(
-    withRequestService(),
-    // withRouter(),
-    connect(null, actions)
-)(Home);
+export default Home;

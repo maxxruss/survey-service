@@ -7,8 +7,55 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/Inbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
+import { useHistory } from "react-router-dom";
+import withRequestService from "../hoc/with-request-service";
+import compose from "../../utils/compose";
+import * as actions from "../../redux/actions/index";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import Button from "@mui/material/Button";
+import { NavLink } from "react-router-dom";
 
-const Menu = () => {
+const MenuList = [
+    { icon: <InboxIcon />, title: "about", path: "/about" },
+    { icon: <InboxIcon />, title: "contacts", path: "/contacts" },
+    { icon: <InboxIcon />, title: "название 1", path: "/about" },
+];
+
+type Props = {
+    authLogOut: () => {};
+    setAuth: (v: boolean) => {};
+    requestService: {
+        auth: (method: object) => { result: string };
+    };
+};
+
+{
+    /* <Button onClick={() => logout()}>Выйти</Button>
+            <Button onClick={() => about()}>about</Button> */
+}
+
+const Menu = (props: Props) => {
+    const { authLogOut, setAuth } = props;
+
+    const history = useHistory();
+
+    async function logout() {
+        var response = await props.requestService.auth({
+            method: "logout",
+        });
+
+        if (response.result == "success") {
+            authLogOut();
+            setAuth(false);
+            history.push("/signin");
+        }
+    }
+
+    const about = async () => {
+        history.push("/about");
+    };
+
     return (
         <>
             <Box
@@ -20,20 +67,32 @@ const Menu = () => {
             >
                 <nav aria-label="main mailbox folders">
                     <List>
-                        <ListItem disablePadding>
+                        {MenuList.map((item, i) => {
+                            return (
+                                <NavLink to={item.path} key={i + item.path}>
+                                    <ListItem disablePadding>
+                                        <ListItemButton>
+                                            <ListItemIcon>
+                                                <InboxIcon />
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                primary={item.title}
+                                            />
+                                        </ListItemButton>
+                                    </ListItem>
+                                </NavLink>
+                            );
+                        })}
+                        <ListItem
+                            disablePadding
+                            onClick={() => logout()}
+                            button
+                        >
                             <ListItemButton>
                                 <ListItemIcon>
                                     <InboxIcon />
                                 </ListItemIcon>
-                                <ListItemText primary="Inbox" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <DraftsIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Drafts" />
+                                <ListItemText primary="Выйти" />
                             </ListItemButton>
                         </ListItem>
                     </List>
@@ -43,4 +102,8 @@ const Menu = () => {
     );
 };
 
-export default Menu;
+export default compose(
+    withRequestService(),
+    // withRouter(),
+    connect(null, actions)
+)(Menu);
