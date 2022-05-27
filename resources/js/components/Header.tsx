@@ -15,6 +15,13 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import { OrgName } from "./dictionary";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles(() => ({
+    header: {
+        marginBottom:'20px',
+    }    
+}));
 
 type Word = object;
 type Props = {
@@ -26,6 +33,8 @@ type Props = {
 };
 
 export default function PrimarySearchAppBar(props: any) {
+    const classes = useStyles();
+
     // const lang = "eng";
     const orgName: any = OrgName;
     const handleChange = (
@@ -150,7 +159,7 @@ export default function PrimarySearchAppBar(props: any) {
     );
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }} className={classes.header}>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton

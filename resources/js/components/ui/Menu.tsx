@@ -1,19 +1,20 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {
+    Box,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Paper,
+    Typography,
+} from "@mui/material";
 import InboxIcon from "@mui/icons-material/Inbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
 import { useHistory } from "react-router-dom";
 import withRequestService from "../hoc/with-request-service";
 import compose from "../../utils/compose";
 import * as actions from "../../redux/actions/index";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 
 const MenuList = [
@@ -30,14 +31,8 @@ type Props = {
     };
 };
 
-{
-    /* <Button onClick={() => logout()}>Выйти</Button>
-            <Button onClick={() => about()}>about</Button> */
-}
-
 const Menu = (props: Props) => {
     const { authLogOut, setAuth } = props;
-
     const history = useHistory();
 
     async function logout() {
@@ -51,11 +46,7 @@ const Menu = (props: Props) => {
             history.push("/signin");
         }
     }
-
-    const about = async () => {
-        history.push("/about");
-    };
-
+ 
     return (
         <>
             <Box
@@ -65,38 +56,49 @@ const Menu = (props: Props) => {
                     bgcolor: "background.paper",
                 }}
             >
-                <nav aria-label="main mailbox folders">
-                    <List>
-                        {MenuList.map((item, i) => {
-                            return (
-                                <NavLink to={item.path} key={i + item.path}>
-                                    <ListItem disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                <InboxIcon />
-                                            </ListItemIcon>
-                                            <ListItemText
-                                                primary={item.title}
-                                            />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </NavLink>
-                            );
-                        })}
-                        <ListItem
-                            disablePadding
-                            onClick={() => logout()}
-                            button
-                        >
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Выйти" />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                </nav>
+                <Paper variant="outlined">
+                    <nav aria-label="main mailbox folders">
+                        <List>
+                            {MenuList.map((item, i) => {
+                                return (
+                                    <NavLink
+                                        key={i + item.path}
+                                        to={item.path}
+                                        isActive={(
+                                            match,
+                                            location
+                                        ): boolean => {
+                                            return match !== null;
+                                        }}
+                                    >
+                                        <ListItem disablePadding>
+                                            <ListItemButton>
+                                                <ListItemIcon>
+                                                    <InboxIcon />
+                                                </ListItemIcon>
+                                                <ListItemText
+                                                    primary={item.title}
+                                                />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </NavLink>
+                                );
+                            })}
+                            <ListItem
+                                disablePadding
+                                onClick={() => logout()}
+                                button
+                            >
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <InboxIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Выйти" />
+                                </ListItemButton>
+                            </ListItem>
+                        </List>
+                    </nav>
+                </Paper>
             </Box>
         </>
     );

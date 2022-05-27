@@ -1,4 +1,5 @@
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const babelOptions = (preset) => {
     const opts = {
@@ -36,11 +37,26 @@ module.exports = (env, argv) => {
         output: {
             filename: "app.js",
             // publicPath: "/",
-            path: path.resolve(__dirname, "public/js"),
+            path: path.resolve(__dirname, "public/dist"),
             clean: true,
         },
         module: {
             rules: [
+                {
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        // fallback to style-loader in development
+                        // style-loader - загружает css через импорт в js файле
+                        // MiniCssExtractPlugin - загружает css через тег link в index.php
+                        !is_prod
+                            ? "style-loader"
+                            : MiniCssExtractPlugin.loader,                        
+                        // Translates CSS into CommonJS
+                        "css-loader",
+                        // Compiles Sass to CSS
+                        "sass-loader",
+                    ],
+                },
                 {
                     test: /\.js$/,
                     use: jsLoaders(),
@@ -69,8 +85,15 @@ module.exports = (env, argv) => {
             ],
         },
         resolve: {
-            extensions: ['.tsx', '.ts', '.js', 'jsx'],
-          },
+            extensions: ['.tsx', '.ts', '.js', 'jsx', 'sass', 'scss', 'css'],
+        },
+        plugins: [
+            new MiniCssExtractPlugin({
+                // Options similar to the same options in webpackOptions.output
+                // both options are optional
+                filename: "app.css",
+            }),
+        ],
         devServer: {
             // historyApiFallback: true,
             headers: { "Access-Control-Allow-Origin": "*" },

@@ -10,14 +10,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    @if(env('APP_ENV') !== 'local')
+    <link href="/dist/app.css" rel="stylesheet" type="text/css">
+    @endif
 </head>
 
 <body>
-    <div id="root"></div>   
+    <div id="root"></div>
     @if(env('APP_ENV') === 'local')
     <script src="http://localhost:8080/app.js"></script>
     @else
-    <script src="/js/app.js"></script>
+    <script src="/dist/app.js"></script>
     @endif
 </body>
 
