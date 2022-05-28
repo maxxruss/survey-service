@@ -7,8 +7,6 @@ import Header from "./Header";
 import Menu from "./ui/Menu";
 import Container from "@mui/material/Container";
 
-
-
 type Props = {
     setAuth: (v: boolean) => void;
 };

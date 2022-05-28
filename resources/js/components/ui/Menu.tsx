@@ -20,7 +20,7 @@ import { NavLink } from "react-router-dom";
 const MenuList = [
     { icon: <InboxIcon />, title: "about", path: "/about" },
     { icon: <InboxIcon />, title: "contacts", path: "/contacts" },
-    { icon: <InboxIcon />, title: "название 1", path: "/about" },
+    { icon: <InboxIcon />, title: "home", path: "/home" },
 ];
 
 type Props = {
@@ -46,7 +46,7 @@ const Menu = (props: Props) => {
             history.push("/signin");
         }
     }
- 
+
     return (
         <>
             <Box
@@ -64,12 +64,10 @@ const Menu = (props: Props) => {
                                     <NavLink
                                         key={i + item.path}
                                         to={item.path}
-                                        isActive={(
-                                            match,
-                                            location
-                                        ): boolean => {
-                                            return match !== null;
-                                        }}
+                                        className={(isActive) =>
+                                            "nav_link" +
+                                            (isActive ? " selected" : "")
+                                        }
                                     >
                                         <ListItem disablePadding>
                                             <ListItemButton>
