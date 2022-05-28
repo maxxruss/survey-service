@@ -16,7 +16,7 @@ interface HeadersTypes {
 
 const _BASE_URL = "/api";
 
-export const auth = (params: AuthParamsTypes) => {
+export const auth = (params: AuthParamsTypes): object => {
     return new Promise((resolve) => {
         // const body = new URLSearchParams();
         // body.append("params", JSON.stringify(params));

@@ -9,6 +9,7 @@ import Spinner from "./spinner";
 import Main from "./Main";
 import SignIn from "./pages/auth/signin";
 import SignUp from "./pages/auth/signup";
+import Respondent from "./pages/respondent";
 import CssBaseline from "@mui/material/CssBaseline";
 import Page404 from "./pages/404";
 
@@ -37,6 +38,14 @@ const Body: React.FC<Props> = (props) => {
 
     function AuthorizedRoute(props: RouteProps): JSX.Element {
         const { children, exact, path } = props;
+        // if (path.indexOf("respondent") != -1) {
+        //     console.log();
+        //     return (
+        //         <Route exact={exact} path={path}>
+        //             {children}
+        //         </Route>
+        //     );
+        // }
         return (
             <Route
                 exact={exact}
@@ -106,6 +115,11 @@ const Body: React.FC<Props> = (props) => {
         <>
             <CssBaseline />
             <Switch>
+                <Route
+                    exact
+                    path="/respondent/:id"
+                    render={(props) => <Respondent />}
+                />
                 <UnAuthorizedRoute exact path="/signin">
                     <SignIn setAuth={setAuth} />
                 </UnAuthorizedRoute>

@@ -12,13 +12,7 @@ import store from "./redux/store";
 import { ServiceProvider } from "./services/context";
 import * as requestService from "./services/request";
 
-type ValueTypes = any;
-
-
-
-
-
-const { ...value }: ValueTypes = requestService;
+const {...value}: object = requestService;
 
 render(
     <Provider store={store}>
