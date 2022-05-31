@@ -13,6 +13,8 @@ import Respondent from "./pages/respondent";
 import CssBaseline from "@mui/material/CssBaseline";
 import Page404 from "./pages/404";
 
+// Routing, check autorization, redirect
+
 interface Props {
     requestService: {
         auth: (method: object) => { result: string; data: string };
@@ -37,15 +39,7 @@ const Body: React.FC<Props> = (props) => {
     const [auth, setAuth] = useState(true);
 
     function AuthorizedRoute(props: RouteProps): JSX.Element {
-        const { children, exact, path } = props;
-        // if (path.indexOf("respondent") != -1) {
-        //     console.log();
-        //     return (
-        //         <Route exact={exact} path={path}>
-        //             {children}
-        //         </Route>
-        //     );
-        // }
+        const { children, exact, path } = props;       
         return (
             <Route
                 exact={exact}
@@ -111,6 +105,7 @@ const Body: React.FC<Props> = (props) => {
     }, []);
 
     if (loading) return <Spinner />;
+    
     return (
         <>
             <CssBaseline />
