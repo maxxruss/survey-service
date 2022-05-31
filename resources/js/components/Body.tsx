@@ -115,11 +115,9 @@ const Body: React.FC<Props> = (props) => {
         <>
             <CssBaseline />
             <Switch>
-                <Route
-                    exact
-                    path="/respondent/:id"
-                    render={(props) => <Respondent />}
-                />
+                <Route exact path="/respondent/:id">
+                    <Respondent />
+                </Route>
                 <UnAuthorizedRoute exact path="/signin">
                     <SignIn setAuth={setAuth} />
                 </UnAuthorizedRoute>
