@@ -12,36 +12,41 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { OrgName } from "../dictionary";
+import Dictionary from "../dictionary";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import compose from "../../utils/compose";
+import * as actions from "../../redux/actions";
 
 const useStyles = makeStyles(() => ({
     header: {
-        marginBottom:'20px',
-    }    
+        marginBottom: "20px",
+    },
 }));
 
-type Word = object;
 type Props = {
-    lang: string;
-    setLeng: (
-        event: React.MouseEvent<HTMLElement>,
-        newAlignment: string
-    ) => any;
+    langSet: (v: string) => {};
 };
 
-export default function PrimarySearchAppBar(props: any) {
+const PrimarySearchAppBar = (props: Props) => {
     const classes = useStyles();
+    const dictionary = Dictionary()
 
-    // const lang = "eng";
-    const orgName: any = OrgName;
+    const { orgName }: any = dictionary;
+
+    console.log("props: ", props);
+    console.log("Dictionary: ", Dictionary());
+
+    // const orgName = "тест";
+
     const handleChange = (
         event: React.MouseEvent<HTMLElement>,
         newAlignment: string
     ) => {
-        props.setLeng(newAlignment);
+        props.langSet(newAlignment);
     };
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -111,7 +116,7 @@ export default function PrimarySearchAppBar(props: any) {
             <MenuItem>
                 <ToggleButtonGroup
                     color="primary"
-                    value={orgName[props.lang]}
+                    value={orgName}
                     exclusive
                     onChange={handleChange}
                 >
@@ -177,13 +182,13 @@ export default function PrimarySearchAppBar(props: any) {
                         component="div"
                         sx={{ display: { xs: "none", sm: "block" } }}
                     >
-                        {orgName[props.lang]}
+                        {orgName}
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
                         <ToggleButtonGroup
                             color="primary"
-                            value={orgName[props.lang]}
+                            value={orgName}
                             exclusive
                             onChange={handleChange}
                         >
@@ -238,4 +243,9 @@ export default function PrimarySearchAppBar(props: any) {
             {renderMenu}
         </Box>
     );
-}
+};
+
+const mapDispatchToProps = (dispatch: any) =>
+    bindActionCreators(actions, dispatch);
+
+export default compose(connect(null, mapDispatchToProps))(PrimarySearchAppBar);

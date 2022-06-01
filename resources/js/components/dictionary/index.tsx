@@ -1,9 +1,29 @@
+import store from "../../redux/store";
+
 type Props = {
-    rus: string;
-    eng: string;
+    lang: "rus" | "eng";
 };
 
-export const OrgName: Props = {
-    rus: "Название организации",
-    eng: "Organization's name",
+const Rus: {} = {
+    orgName: "Название организации",
 };
+
+const Eng: {} = {
+    orgName: "Organization's name",
+};
+
+const Dictionary = (): {} => {
+    const state: any = store.getState();
+    // console.log('store: ', store)
+    if (state.lang === "rus") {
+        return Rus;
+    } else if (state.lang === "eng") {
+        return Eng;
+    } else {
+        return {};
+    }
+};
+
+// Dictionary()
+
+export default Dictionary;

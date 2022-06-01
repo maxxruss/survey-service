@@ -13,11 +13,10 @@ type Props = {
 
 const Main = (props: Props) => {
     const { setAuth } = props;
-    const [lang, setLeng] = useState("rus");
 
     return (
         <>
-            <Header lang={lang} setLeng={setLeng} />
+            <Header />
             <Container maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs={2}>
